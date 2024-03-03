@@ -1,0 +1,64 @@
+.stats{
+    left: 60px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(240, 240, 237);
+    border: 1px solid #ccc; /* Thin border outline */
+    border-radius: 8px; /* Rounded edges */
+    width: 200px; /* Example size, adjust as needed */
+    height: 200px; /* Same as width to make it square */
+    padding: 16px; /* Adjust as needed */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    position: relative; /* Needed for absolute positioning of the header */
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    top: 16px; /* Adjust as needed */
+    left: 16px; /* Adjust as needed */
+}
+
+.icon {
+    /* Additional styles for the icon if needed */
+    margin-right: 8px; /* Adjust space between icon and title as needed */
+}
+
+.title {
+    /* Additional styles for the title if needed */
+}
+
+.data {
+    /* Centers the data in the card */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure the data fills the card width */
+    height: 100%; /* Ensure the data fills the card height */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cardGrid{
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px 50px;
+    margin-left: 0; 
+    padding-left: 0; 
+}
+
+.statsTitle{
+    margin-left: 105px;
+}

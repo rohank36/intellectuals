@@ -1,0 +1,20 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+
+}
+
+.mini{
+    margin-top: 2rem;
+    display:flex;
+    flex-direction: column;
+}
+
+.connections{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}

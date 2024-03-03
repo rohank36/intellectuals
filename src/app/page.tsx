@@ -3,8 +3,12 @@ import styles from "./page.module.css";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <div className={styles.landing}>
       <h1>Welcome Fellow Intellectual</h1>
-    </main>
+      <div>
+        <input placeholder="Enter Access Code"></input>
+        <button>Login</button>
+      </div>
+    </div>  
   );
 }

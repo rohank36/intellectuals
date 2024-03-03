@@ -1,0 +1,34 @@
+.navbar{
+    position: absolute;
+    height: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #333; 
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}   
+
+.title{
+    font-size: 1.5rem;
+    margin-left: 15px;
+}
+
+.navItems{
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navItems button:hover {
+    background: #0056b3;
+}
+
+.section {
+    padding: 10rem;
+}

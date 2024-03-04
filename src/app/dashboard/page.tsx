@@ -1,6 +1,15 @@
 import styles from "./dashboardStyles.module.css";
+import Leaderboard from "./Leaderboard";
+
 export default function Page() {
-    return <h1>Hello, Leaderboard Page!</h1>
+    return(
+      <div>
+        <h1>Hello, Leaderboard Page!</h1>
+        <Leaderboard title="Season Ranking"/>
+        <Leaderboard title="Todays Top 5 Mini Times"/>
+        <Leaderboard title="Previous Seasons Top 3"/>
+      </div>
+    );
   }
 
   //Season Ranking 

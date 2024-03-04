@@ -3,16 +3,16 @@ import StatsCard from "./StatsCard";
 export default function Page() {
   return(
     <div className={styles.stats}>
-      <h1 className={styles.statsTitle}>Your Stats!</h1>
+      <h1 className={styles.statsTitle}>📈 Your Stats!</h1>
       <div className={styles.cardGrid}>
-        <StatsCard icon="🏆" cardTitle="Minis Played" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Avg Mini Time" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Avg Mini Time vs League Avg" data="25"/>
+        <StatsCard icon="🕹️" cardTitle="Minis Played" data="25"/>
+        <StatsCard icon="⏳" cardTitle="Avg Mini Time" data="25"/>
+        <StatsCard icon="⚔️" cardTitle="Avg Mini Time vs League Avg" data="25"/>
         <StatsCard icon="🏆" cardTitle="Total Mini Podium Finishes" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Connections Played" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Avg Mistakes Made" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Avg Mistakes Made vs League Avg" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Longest Perfect Streak" data="25"/>
+        <StatsCard icon="🕹️" cardTitle="Connections Played" data="25"/>
+        <StatsCard icon="🚩" cardTitle="Avg Mistakes Made" data="25"/>
+        <StatsCard icon="⚔️" cardTitle="Avg Mistakes Made vs League Avg" data="25"/>
+        <StatsCard icon="🚀" cardTitle="Longest Perfect Streak" data="25"/>
       </div>
     </div>
   );

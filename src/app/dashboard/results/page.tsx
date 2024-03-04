@@ -11,6 +11,7 @@ export default function Page() {
           <label>Connections</label>
           <input placeholder="Enter total mitsakes made"></input>
         </div>
+        <button className={styles.submitBtn}>Submit Scores</button>
       </div>
     );
   }

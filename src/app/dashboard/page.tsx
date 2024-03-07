@@ -1,7 +1,7 @@
 import styles from "./dashboardStyles.module.css";
 import Leaderboard from "./Leaderboard";
 
-export default function Page() {
+export default function DashboardPage() {
     return(
       <div>
         <h1>Hello, Leaderboard Page!</h1>

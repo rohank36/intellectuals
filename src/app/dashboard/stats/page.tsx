@@ -1,6 +1,6 @@
 import styles from "./statsStyles.module.css";
 import StatsCard from "./StatsCard";
-export default function Page() {
+export default function StatsPage() {
   return(
     <div className={styles.stats}>
       <h1 className={styles.statsTitle}>📈 Your Stats!</h1>

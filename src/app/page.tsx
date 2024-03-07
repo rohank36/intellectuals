@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className={styles.landing}>
       <h1>Welcome Fellow Intellectual</h1>

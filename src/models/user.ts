@@ -2,7 +2,24 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
     {
-        //field: type,
+        _id: String,
+        name: String,
+        accessCode: String,
+        curStats:{
+            //add to archive before end of season reset. 
+            //can only add to these when season is ongoing.
+            curSeasonMiniTimes: Array<String>, // minisPlayedThisSeason = miniscores.length;
+            curSeasonConnectionScores: Array<Number>,//connectionsPlayedThisSeason = curSeasonConnectionScores.length
+        },
+        archivedStats:{
+            avgMiniTime: String,
+            totalMinisPlayed: Number,
+            totalMiniPodiumFinishes: Number,
+
+            avgConnectionScore: Number,
+            totalConnectionsPlayed: Number,
+            longestPerfectConnectionsStreak: Number,
+        },
     }
 )
 

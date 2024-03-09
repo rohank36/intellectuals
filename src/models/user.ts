@@ -5,18 +5,18 @@ const userSchema = new Schema(
         _id: String,
         name: String,
         accessCode: String,
-        curStats:{
+        stats:{
             //add to archive before end of season reset. 
             //can only add to these when season is ongoing.
             curSeasonMiniTimes: Array<String>, // minisPlayedThisSeason = miniscores.length;
-            curSeasonConnectionScores: Array<Number>,//connectionsPlayedThisSeason = curSeasonConnectionScores.length
-        },
-        archivedStats:{
-            avgMiniTime: String,
+            avgMiniTime: Number, //avgMiniTime = totalMiniTime/totalMinisPlayed
+            totalMiniTime: Number,
             totalMinisPlayed: Number,
             totalMiniPodiumFinishes: Number,
 
-            avgConnectionScore: Number,
+            curSeasonConnectionScores: Array<Number>,//connectionsPlayedThisSeason = curSeasonConnectionScores.length
+            avgConnectionScore: Number, //avgConnectionScore = totalConnectionScore/totalConnectionsPlayed
+            totalConnectionScore: Number,
             totalConnectionsPlayed: Number,
             longestPerfectConnectionsStreak: Number,
         },

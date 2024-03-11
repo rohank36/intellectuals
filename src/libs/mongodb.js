@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
-/*
 const connectMongoDB = async() => {
     try{
-        // await mongoose.connect(process.env.MONGODB_URI);
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log("Connected to MongoDB");
     } catch(error){
         console.error('MongoDB connection error:', error);
@@ -11,8 +10,9 @@ const connectMongoDB = async() => {
 }
 
 export default connectMongoDB;
-*/
+
 // lib/mongodb.js
+/*
 import { MongoClient } from 'mongodb';
 
 const { MONGODB_URI, MONGODB_DB } = process.env;
@@ -40,6 +40,7 @@ export async function connectToDatabase() {
         };
 
         cached.promise = MongoClient.connect(MONGODB_URI, opts).then((client) => {
+            console.log('Connected to MongoDB');
             return {
                 client,
                 db: client.db(MONGODB_DB),
@@ -49,3 +50,4 @@ export async function connectToDatabase() {
     cached.conn = await cached.promise;
     return cached.conn;
 }
+*/

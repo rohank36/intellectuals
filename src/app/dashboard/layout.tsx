@@ -1,6 +1,6 @@
 'use client'
 import styles from "./dashboardStyles.module.css";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 export default function DashboardLayout({
     children,
@@ -23,7 +23,7 @@ export default function DashboardLayout({
                     <button type="button" onClick={() => router.push('/dashboard')}>
                       Leaderboard
                     </button>
-                    <button>Logout</button>
+                    <a href="/api/auth/logout">Logout</a>
                 </div>
             </div>
             <section className={styles.section}>{children}</section>

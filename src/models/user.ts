@@ -2,26 +2,24 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
     {
-        _id: String,
-        name: String,
-        accessCode: String,
+        email: { type: String, required: true, unique: true },
+        name: { type: String, default: '' },
         stats:{
-            //add to archive before end of season reset. 
-            //can only add to these when season is ongoing.
-            curSeasonMiniTimes: Array<String>, // minisPlayedThisSeason = miniscores.length;
-            avgMiniTime: Number, //avgMiniTime = totalMiniTime/totalMinisPlayed
-            totalMiniTime: Number,
-            totalMinisPlayed: Number,
-            totalMiniPodiumFinishes: Number,
+            //curSeasonMiniTimes: { type: [Number], default: [] }, // minisPlayedThisSeason = miniscores.length;
+            avgMiniTime: { type: Number, default: 0 }, //avgMiniTime = totalMiniTime/totalMinisPlayed
+            totalMiniTime: { type: Number, default: 0 },
+            totalMinisPlayed: { type: Number, default: 0 },
+            totalMiniPodiumFinishes: { type: Number, default: 0 },
 
-            curSeasonConnectionScores: Array<Number>,//connectionsPlayedThisSeason = curSeasonConnectionScores.length
-            avgConnectionScore: Number, //avgConnectionScore = totalConnectionScore/totalConnectionsPlayed
-            totalConnectionScore: Number,
-            totalConnectionsPlayed: Number,
-            longestPerfectConnectionsStreak: Number,
+            //curSeasonConnectionScores: { type: [Number], default: [] }, //connectionsPlayedThisSeason = curSeasonConnectionScores.length
+            avgConnectionScore: { type: Number, default: 0 }, //avgConnectionScore = totalConnectionScore/totalConnectionsPlayed
+            totalConnectionScore: { type: Number, default: 0 },
+            totalConnectionsPlayed: { type: Number, default: 0 },
+            longestPerfectConnectionsStreak: { type: Number, default: 0 },
         },
-    }
-)
+    },  
+    {timestamps: true }
+);
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;

@@ -2,15 +2,14 @@ import mongoose, { Schema } from "mongoose";
 
 const leagueSchema = new Schema(
     {
-        _id: String, 
-        name: String,
-        accessCode: String,
-        players: Array<String>, //use player ids in array
-        isInSeason: Boolean,
-        leaderboard: Array<String>,
-        topFive: Array<String>,
-        avgMiniTime: Number,
-        avgConnectionScore: Number,
+        name: {type: String, required: true, unique: true},
+        accessCode: {type: String, unique: true},
+        players: {type: [String], default: []}, //use player ids in array
+        isInSeason: {type: Boolean, default: false},
+        leaderboard: {type: [String], default: []},
+        topFive: {type: [String], default: []},
+        avgMiniTime: {type: Number, default: 0},
+        avgConnectionScore: {type: Number, default: 0},
     }
 )
 

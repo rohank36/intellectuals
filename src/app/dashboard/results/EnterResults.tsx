@@ -13,7 +13,7 @@ export default function EnterResults() {
         console.log('Scores submitted');
     }
     */
-
+    //TODO: Need to validate here that the formats and range of scores is valid (i.e. connections mistakes can't be <0 || > 4 and mini scores has to follow xx.xx format)
     return (
         //onSubmit={submitResults} --> include this in form tag later
         <form >

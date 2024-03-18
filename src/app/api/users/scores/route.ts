@@ -19,3 +19,4 @@ export async function PUT(request: NextRequest){
         return NextResponse.json({ message: "Failed to send scores", error: err}, { status: 500 });
     }
 }
+

@@ -5,6 +5,8 @@ interface LeaderboardProps{
     title: string;
 }
 
+//TODO: Consider going a global leaderboard for everyone that uses the site regardless of league (show name, league, points etc)
+
 const Leaderboard = ({title}: LeaderboardProps) =>{
     return(
         <div>

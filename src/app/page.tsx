@@ -9,6 +9,7 @@ export default function HomePage() {
   if (isLoading) return <div>Loading...</div>;
   else if (error) return <div>{error.message}</div>;
   else if(user){
+    //TODO if user is logged in but does not have a displayName or league, prompt them to enter name and league access code
     return (
       <div className={styles.landing}>
         <h1>Welcome {user.name}</h1>

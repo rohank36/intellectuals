@@ -4,6 +4,7 @@ import UserService from "../../services/user";
 // create new user in db
 export async function POST(request: NextRequest, {params}: {params: {email: string}}) {
     const { email } = params;
+    const {displayName: displayName, leagueCode:leagueCode} = await request.json();
     if (!email) {
         return NextResponse.json({ message: "Missing or invalid email parameter" }, { status: 400 });
     }
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest, {params}: {params: {email: stri
         if(user){
             return NextResponse.json({ message: "User already exists", user: user }, { status: 409 });
         }
-        const newUser = await UserService.createNewUser(email);
+        const newUser = await UserService.createNewUser(email, displayName, leagueCode);
         return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
     }catch(err){
         console.error("Failed to create user: ", err);
@@ -38,6 +39,7 @@ export async function GET(request: NextRequest, {params}: {params: {email: strin
     }
 }
 
+//upadate user profile details in db (name and league)
 /*
 //update user in db
 export async function PUT(request: NextRequest, {params}: {params: {email: string}}){

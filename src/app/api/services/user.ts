@@ -30,15 +30,16 @@ class UserService{
     }
     */
     
-    static async createNewUser(email:String, displayName:String, leagueCode:String){
+    static async createNewUser(email:String, firstName:String, lastName:String, displayName:String, accessCode:String){
         try {
             await connectMongoDB();
-            const associatedLeague = await LeagueService.getLeagueByAccessCode(leagueCode);
+            const associatedLeague = await LeagueService.getLeagueByAccessCode(accessCode);
             if(!associatedLeague){
                 throw new Error("League not found");
             }else{
-                const newUser = await User.create({email, displayName, league: associatedLeague._id});
-                await LeagueService.addPlayerToLeague(email, leagueCode);
+                let fullName = firstName + " " + lastName;
+                const newUser = await User.create({email, firstName, lastName, fullName, displayName, league: associatedLeague._id});
+                await LeagueService.addPlayerToLeague(email, accessCode);
                 return newUser;
             }
           } catch (error) {
@@ -61,7 +62,7 @@ class UserService{
             const user = await UserService.getUser(email);
             const newTotalMiniTime = user.stats.totalMiniTime + miniTime;
             const newTotalMinisPlayed = user.stats.totalMinisPlayed + 1;
-            const newAvgMiniTime = newTotalMiniTime / newTotalMinisPlayed; //TODO: might have to round for nice number 
+            const newAvgMiniTime = newTotalMiniTime / newTotalMinisPlayed; 
             await connectMongoDB();
             await User.findOneAndUpdate({email},{$set:{"stats.totalMiniTime": newTotalMiniTime, "stats.totalMinisPlayed": newTotalMinisPlayed, "stats.avgMiniTime": newAvgMiniTime}});
             return "Successfully updated Mini stats";
@@ -75,7 +76,7 @@ class UserService{
             const user = await UserService.getUser(email);
             const newTotalConnectionScore = user.stats.totalConnectionScore + connectionMistakes;
             const newTotalConnectionsPlayed = user.stats.totalConnectionsPlayed + 1;
-            const newAvgConnectionScore = newTotalConnectionScore / newTotalConnectionsPlayed; //TODO: might have to round for nice number 
+            const newAvgConnectionScore = newTotalConnectionScore / newTotalConnectionsPlayed; 
             await connectMongoDB();
             await User.findOneAndUpdate({email},{$set:{"stats.totalConnectionScore": newTotalConnectionScore, "stats.totalConnectionsPlayed": newTotalConnectionsPlayed, "stats.avgConnectionScore": newAvgConnectionScore}});
             return "Successfully updated Connection stats";
@@ -99,6 +100,9 @@ class UserService{
                     break;
             }
             let miniPoints = 0;
+            if(miniTime){
+                miniPoints = 3;
+            }
         }catch(error){
             await throwError(error);
         }

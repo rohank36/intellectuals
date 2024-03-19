@@ -4,7 +4,7 @@ import UserService from "../../services/user";
 // create new user in db
 export async function POST(request: NextRequest, {params}: {params: {email: string}}) {
     const { email } = params;
-    const {displayName: displayName, leagueCode:leagueCode} = await request.json();
+    const {displayName: displayName, accessCode:accessCode, firstName:firstName, lastName:lastName} = await request.json();
     if (!email) {
         return NextResponse.json({ message: "Missing or invalid email parameter" }, { status: 400 });
     }
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest, {params}: {params: {email: stri
         if(user){
             return NextResponse.json({ message: "User already exists", user: user }, { status: 409 });
         }
-        const newUser = await UserService.createNewUser(email, displayName, leagueCode);
+        const newUser = await UserService.createNewUser(email, firstName, lastName, displayName, accessCode);
         return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
     }catch(err){
         console.error("Failed to create user: ", err);

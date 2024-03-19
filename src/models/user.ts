@@ -3,7 +3,10 @@ import mongoose, { Schema } from "mongoose";
 const userSchema = new Schema(
     {
         email: { type: String, required: true, unique: true },
-        displayName: { type: String},
+        firstName: {type: String, required: true},
+        lastName: {type: String, required: true},
+        fullName: {type: String},
+        displayName: { type: String, required: true},
         league: { type: String },
         hasSubmittedToday: {type: Boolean, default: false},
         miniTimeToday: {type: Number, default: 0},

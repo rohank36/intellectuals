@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from "./resultsStyles.module.css"
 
 export default function EnterResults() {
     const [mini, setMini] = useState('');
@@ -16,41 +15,34 @@ export default function EnterResults() {
     //TODO: Need to validate here that the formats and range of scores is valid (i.e. connections mistakes can't be <0 || > 4 and mini scores has to follow xx.xx format)
     return (
         //onSubmit={submitResults} --> include this in form tag later
-        <form >
-            <div className={styles.container}>
-                <h1>Enter your results:</h1>
-                <div className={styles.mini}>
-                    <label>Mini</label>
-                    <input 
-                        placeholder="Enter mini time"
-                        value={mini}
-                        onChange={(e) => setMini(e.target.value)}
-                    />
+        <form className="flex flex-col items-center justify-center mt-20">
+            <div className="text-center">
+                <h1 className="text-xl font-semibold mb-4">Enter your results:</h1>
+                <div className="mt-8">
+                <label className="block text-sm font-medium text-gray-700">Mini</label>
+                <input 
+                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter mini time"
+                    value={mini}
+                    onChange={(e) => setMini(e.target.value)}
+                />
                 </div>
-                <div className={styles.connections}>
-                    <label>Connections</label>
-                    <input 
-                        placeholder="Enter total mistakes made"
-                        value={connections}
-                        onChange={(e) => setConnections(e.target.value)}
-                    />
+                <div className="mt-8">
+                <label className="block text-sm font-medium text-gray-700">Connections</label>
+                <input 
+                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    placeholder="Enter total mistakes made"
+                    value={connections}
+                    onChange={(e) => setConnections(e.target.value)}
+                />
                 </div>
-                <button className={styles.submitBtn} type="submit">Submit Scores</button>
+                <button 
+                className="mt-10 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-md shadow"
+                type="submit">
+                    Submit Scores
+                </button>
             </div>
         </form>
+
     )
 }
-/*
-<div className={styles.container}>
-        <h1>Enter your results:</h1>
-        <div className={styles.mini}>
-          <label>Mini</label>
-          <input placeholder="Enter mini time"></input>
-        </div>
-        <div className={styles.connections}>
-          <label>Connections</label>
-          <input placeholder="Enter total mitsakes made"></input>
-        </div>
-        <button className={styles.submitBtn}>Submit Scores</button>
-      </div>
-*/

@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './dashboardStyles.module.css';
 
 interface LeaderboardProps{
     title: string;

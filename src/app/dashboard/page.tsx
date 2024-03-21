@@ -1,4 +1,3 @@
-import styles from "./dashboardStyles.module.css";
 import Leaderboard from "./Leaderboard";
 
 export default function DashboardPage() {

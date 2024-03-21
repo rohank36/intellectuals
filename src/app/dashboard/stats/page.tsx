@@ -1,10 +1,9 @@
-import styles from "./statsStyles.module.css";
 import StatsCard from "./StatsCard";
 export default function StatsPage() {
   return(
-    <div className={styles.stats}>
-      <h1 className={styles.statsTitle}>📈 Your Stats!</h1>
-      <div className={styles.cardGrid}>
+    <div className="ml-14">
+      <h1 className="text-2xl font-bold mb-6 ml-12">📈 Your Stats!</h1>
+      <div className="flex flex-wrap justify-center gap-y-8 gap-x-12">
         <StatsCard icon="🕹️" cardTitle="Minis Played" data="25"/>
         <StatsCard icon="⏳" cardTitle="Avg Mini Time" data="25"/>
         <StatsCard icon="⚔️" cardTitle="Avg Mini Time vs League Avg" data="25"/>

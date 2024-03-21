@@ -1,6 +1,6 @@
 'use client'
-import styles from "./dashboardStyles.module.css";
 import { useRouter } from 'next/navigation';
+import NavBar from "./NavBar";
 
 export default function DashboardLayout({
     children,
@@ -11,22 +11,8 @@ export default function DashboardLayout({
     const router = useRouter()
     return(
         <div>
-            <div className={styles.navbar}>
-                <p className={styles.title}>Intellectuals</p>
-                <div className={styles.navItems}>
-                    <button type="button" onClick={() => router.push('/dashboard/results')}>
-                      Log Results
-                    </button>
-                    <button type="button" onClick={() => router.push('/dashboard/stats')}>
-                      Stats
-                    </button>
-                    <button type="button" onClick={() => router.push('/dashboard')}>
-                      Leaderboard
-                    </button>
-                    <a href="/api/auth/logout">Logout</a>
-                </div>
-            </div>
-            <section className={styles.section}>{children}</section>
+            <NavBar/>
+            <section className="p-36">{children}</section>
         </div>
     )
   }

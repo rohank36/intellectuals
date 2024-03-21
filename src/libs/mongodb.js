@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+//TOOD: add a prod database and connect to it if process.env.NODE_ENV === 'production'
 const connectMongoDB = async() => {
     try{
         await mongoose.connect(process.env.MONGODB_URI);

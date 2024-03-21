@@ -20,9 +20,9 @@ export default function RootLayout({
       <UserProvider>
         <body className={inter.className}>
           {children}
-          <footer className="footer footer-center p-4 bg-base-300 text-base-content absolute bottom-0 w-full">
+          <footer className="footer footer-center p-4 text-base-content absolute bottom-0 w-full">
             <aside>
-              <p>All rights reserved by The High Council Of Intellectuals - Made with &#x1F499; by Rohan</p>
+              <p>For the intellectuals - made with &#x1F499; by Rohan</p>
             </aside>
           </footer>
         </body>

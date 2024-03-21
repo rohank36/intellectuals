@@ -15,7 +15,7 @@ export default function EnterResults() {
     //TODO: Need to validate here that the formats and range of scores is valid (i.e. connections mistakes can't be <0 || > 4 and mini scores has to follow xx.xx format)
     return (
         //onSubmit={submitResults} --> include this in form tag later
-        <form className="flex flex-col items-center justify-center mt-20">
+        <form className="flex flex-col items-center justify-center mt-10">
             <div className="text-center">
                 <h1 className="text-xl font-semibold mb-4">Enter your results:</h1>
                 <div className="mt-8">

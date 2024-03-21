@@ -1,32 +1,66 @@
-import StatsCard from "./StatsCard";
+
 export default function StatsPage() {
   return(
-    <div className="ml-14">
+
+    <div className="ml-14"> 
       <h1 className="text-2xl font-bold mb-6 ml-12">📈 Your Stats!</h1>
       <div className="flex flex-wrap justify-center gap-y-8 gap-x-12">
-        <StatsCard icon="🕹️" cardTitle="Minis Played" data="25"/>
-        <StatsCard icon="⏳" cardTitle="Avg Mini Time" data="25"/>
-        <StatsCard icon="⚔️" cardTitle="Avg Mini Time vs League Avg" data="25"/>
-        <StatsCard icon="🏆" cardTitle="Total Mini Podium Finishes" data="25"/>
-        <StatsCard icon="🕹️" cardTitle="Connections Played" data="25"/>
-        <StatsCard icon="🚩" cardTitle="Avg Mistakes Made" data="25"/>
-        <StatsCard icon="⚔️" cardTitle="Avg Mistakes Made vs League Avg" data="25"/>
-        <StatsCard icon="🚀" cardTitle="Longest Perfect Streak" data="25"/>
+        
+        <div className="stats shadow mt-5 ml-14">
+          <div className="stat">
+            <div className="stat-figure text-primary">
+              <p className="text-3xl">🕹️</p>
+            </div>
+            <div className="stat-title">Minis Played</div>
+            <div className="stat-value text-primary">25</div>
+          </div>
+          
+          <div className="stat">
+            <div className="stat-figure text-secondary">
+              <p className="text-3xl">⏳</p>
+            </div>
+            <div className="stat-title">Average Mini Time</div>
+            <div className="stat-value text-secondary">25</div>
+            <div className="stat-desc">vs 4.01 League Average</div>
+          </div>
+          
+          <div className="stat">
+            <div className="stat-figure text-secondary">
+              <p className="text-3xl">🏆</p>
+            </div>
+            <div className="stat-title">Total Mini Podiums</div>
+            <div className="stat-value">25</div>
+          </div>
+        </div>
+
+        <div className="stats shadow mt-5 ml-14">
+          <div className="stat">
+            <div className="stat-figure text-primary">
+              <p className="text-3xl">🕹️</p>
+            </div>
+            <div className="stat-title">Connections Played</div>
+            <div className="stat-value text-primary">25</div>
+          </div>
+          
+          <div className="stat">
+            <div className="stat-figure text-secondary">
+              <p className="text-3xl">🎯</p>
+            </div>
+            <div className="stat-title">Average Mistakes Made</div>
+            <div className="stat-value text-secondary">25</div>
+            <div className="stat-desc">vs 2 League Average</div>
+          </div>
+          
+          <div className="stat">
+            <div className="stat-figure text-secondary">
+              <p className="text-3xl">🚀</p>
+            </div>
+            <div className="stat-title">Longest Perfect Streak</div>
+            <div className="stat-value">25</div>
+          </div>
+        </div>
+      
       </div>
     </div>
   );
 }
-
-
-//Stats to track
-/*
-  Mini Games played
-  Average Mini Time 
-  Average Mini time vs league average 
-  Total Mini Podium Finishes 
-
-  Connections Games played
-  Average Mistakes made 
-  Average Mistakes made vs league average
-  Longest Perfect Connections Streak
-*/

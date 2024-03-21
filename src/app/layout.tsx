@@ -22,7 +22,7 @@ export default function RootLayout({
           {children}
           <footer className="footer footer-center p-4 bg-base-300 text-base-content absolute bottom-0 w-full">
             <aside>
-              <p>Copyright © 2024 - All rights reserved by The High Council Of Intellectuals - Made with &#x1F499; by Rohan</p>
+              <p>All rights reserved by The High Council Of Intellectuals - Made with &#x1F499; by Rohan</p>
             </aside>
           </footer>
         </body>

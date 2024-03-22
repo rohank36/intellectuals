@@ -5,12 +5,11 @@ import LeagueService from "../services/league";
 export async function POST(request: NextRequest) {
     const {name: name, accessCode: accessCode} = await request.json();
     try{
-        const league = LeagueService.createLeague(name, accessCode);
+        const league = await LeagueService.createLeague(name, accessCode);
         return NextResponse.json({ message: "League created successfully", league: league }, { status: 201 });
     }catch(err){
         console.error("Failed to create league", err);
         return NextResponse.json({ message: "Failed to create league", error: err}, { status: 500 });
     }
 }
-
 

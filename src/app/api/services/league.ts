@@ -1,13 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
 import connectMongoDB from "@/libs/mongodb";
-import League from "../../../models/user";
+import League from "../../../models/league";
 import throwError from "./error";
 
 class LeagueService{
     static async getLeagueByAccessCode(accessCode:String){
         try{
             await connectMongoDB();
-            const league = await League.findOne({accessCode});
+            const league = await League.findOne({accessCode: accessCode});
             return league;
         }catch(error){
             await throwError(error);

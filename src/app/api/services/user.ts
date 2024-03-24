@@ -90,9 +90,9 @@ class UserService{
         try{    
             const user = await UserService.getUser(email);
             await connectMongoDB();
-            //TODO: Note here that in the db, the decimal numbers in the array are being rounded so it is not saving properly
-            const updatedSeasonMiniTimes = user.stats.curSeasonMiniTimes.push(miniTime);
-            const updatedSeasonConnectionScores = user.stats.curSeasonConnectionScores.push(connectionMistakes);
+            
+            const updatedSeasonMiniTimes = [...user.stats.curSeasonMiniTimes, miniTime];
+            const updatedSeasonConnectionScores = [...user.stats.curSeasonConnectionScores, connectionMistakes];
             const newCurSeasonPoints = user.curSeasonPoints + userPoints;
             
             //handle user perfect connection streak stats

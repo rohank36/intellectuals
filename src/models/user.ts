@@ -23,6 +23,7 @@ const userSchema = new Schema(
             totalConnectionScore: { type: Number, default: 0 },
             totalConnectionsPlayed: { type: Number, default: 0 },
             longestPerfectConnectionsStreak: { type: Number, default: 0 },
+            currentPerfectConnectionsStreak: { type: Number, default: 0 },
         },
     },  
     {timestamps: true }

@@ -14,3 +14,5 @@ export async function GET(request: NextRequest){
         return NextResponse.json({ message: "Failed to get league", error: err}, { status: 500 });
     }
 }
+
+//TODO: write endpoints for adding and removing a player from a league 

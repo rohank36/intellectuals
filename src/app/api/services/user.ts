@@ -85,7 +85,39 @@ class UserService{
         }
     }
 
-    static async calculatePoints(connectionMistakes: Number, miniTime: Number, email: String){
+    static async updateUserAfterScoresSubmitted(miniTime: Number, connectionMistakes: Number, userPoints: Number, email: String){
+        //Update: miniTimeToday, hasSubmittedToday, curSeasonMiniTimes, curSeasonConnectionScores, curSeasonPoints
+        try{    
+            const user = await UserService.getUser(email);
+            await connectMongoDB();
+            //TODO: Note here that in the db, the decimal numbers in the array are being rounded so it is not saving properly
+            const updatedSeasonMiniTimes = user.stats.curSeasonMiniTimes.push(miniTime);
+            const updatedSeasonConnectionScores = user.stats.curSeasonConnectionScores.push(connectionMistakes);
+            const newCurSeasonPoints = user.curSeasonPoints + userPoints;
+            
+            //handle user perfect connection streak stats
+            if(connectionMistakes == 0){
+                const newCurrentStreak = user.stats.currentPerfectConnectionsStreak + 1;
+                if(newCurrentStreak > user.stats.longestPerfectConnectionsStreak){
+                    await User.findOneAndUpdate({email},{$set:{"stats.longestPerfectConnectionsStreak":newCurrentStreak,"stats.currentPerfectConnectionsStreak":newCurrentStreak,"curSeasonPoints": newCurSeasonPoints,"hasSubmittedToday": true, "miniTimeToday": miniTime,"stats.curSeasonMiniTimes": updatedSeasonMiniTimes, "stats.curSeasonConnectionScores": updatedSeasonConnectionScores}});
+                }else{
+                    await User.findOneAndUpdate({email},{$set:{"stats.currentPerfectConnectionsStreak":newCurrentStreak,"curSeasonPoints": newCurSeasonPoints,"hasSubmittedToday": true, "miniTimeToday": miniTime,"stats.curSeasonMiniTimes": updatedSeasonMiniTimes, "stats.curSeasonConnectionScores": updatedSeasonConnectionScores}});
+                }
+            }else{
+                if(user.stats.currentPerfectConnectionsStreak > user.stats.longestPerfectConnectionsStreak){
+                    await User.findOneAndUpdate({email},{$set:{"stats.longestPerfectConnectionsStreak":user.stats.currentPerfectConnectionsStreak,"stats.currentPerfectConnectionsStreak":0,"curSeasonPoints": newCurSeasonPoints,"hasSubmittedToday": true, "miniTimeToday": miniTime,"stats.curSeasonMiniTimes": updatedSeasonMiniTimes, "stats.curSeasonConnectionScores": updatedSeasonConnectionScores}});
+                }
+                await User.findOneAndUpdate({email},{$set:{"stats.currentPerfectConnectionsStreak":0,"curSeasonPoints": newCurSeasonPoints,"hasSubmittedToday": true, "miniTimeToday": miniTime,"stats.curSeasonMiniTimes": updatedSeasonMiniTimes, "stats.curSeasonConnectionScores": updatedSeasonConnectionScores}});
+                
+            }
+            
+            return `Successfully updated ${email} stats after scores submitted`;
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async calculateBasePoints(connectionMistakes: Number, miniTime: Number, email: String){
         try{
             let connectionPoints = 0;
             switch (connectionMistakes) {
@@ -103,6 +135,7 @@ class UserService{
             if(miniTime){
                 miniPoints = 3;
             }
+            return connectionPoints + miniPoints;
         }catch(error){
             await throwError(error);
         }

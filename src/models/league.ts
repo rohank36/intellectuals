@@ -8,7 +8,9 @@ const leagueSchema = new Schema(
         isInSeason: {type: Boolean, default: false},
         leaderboard: {type: [String], default: []}, //TODO: think about this datastructure, hashmap better? same for topFive
         championshipBoard:  {type: [String], default: []},
-        topFive: {type: [String], default: []}, 
+        topFive: {type: {}},
+        //topFiveScore: {type: [Number], default: []}, 
+        //topFivePlayers: {type: [String], default: []},
 
         avgMiniTime: {type: Number, default: 0}, 
         totalMiniTime: {type: Number, default: 0},

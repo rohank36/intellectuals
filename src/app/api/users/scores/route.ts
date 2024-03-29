@@ -8,6 +8,7 @@ export async function PUT(request: NextRequest){
         return NextResponse.json({ message: "Missing or invalid email parameter" }, { status: 400 });
     }
     try{
+        let hasSubmittedToday = false;
         //Update user and league stats:
         await UserService.updateTotalMini(miniTime, email);
         await LeagueService.updateTotalLeagueMini(miniTime, accessCode);
@@ -18,10 +19,11 @@ export async function PUT(request: NextRequest){
         const points: number | undefined = await UserService.calculateBasePoints(connectionMistakes, miniTime, email);
         if (points !== undefined) {
             await UserService.updateUserAfterScoresSubmitted(miniTime, connectionMistakes, points, email);
+            hasSubmittedToday = true;
         }
     
         //Update league leaderboards
-        await LeagueService.updateLeagueTopFive(email, miniTime, accessCode);
+        await LeagueService.updateLeagueTopFive(email, miniTime, accessCode, hasSubmittedToday);
 
         return NextResponse.json({ message: "Scores sent successfully" }, { status: 200 });
     }catch(err){

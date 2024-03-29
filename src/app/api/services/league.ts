@@ -4,6 +4,16 @@ import League from "../../../models/league";
 import throwError from "./error";
 import UserService from "./user";
 import { platform } from "os";
+import Leaderboard from "@/app/dashboard/Leaderboard";
+
+interface LeaderboardEntry {
+    email: string;
+    totalPoints: number;
+}
+
+interface Leaderboard {
+    [position: string]: LeaderboardEntry;
+}
 
 class LeagueService{
     static async getLeagueByAccessCode(accessCode:String){
@@ -79,30 +89,72 @@ class LeagueService{
     }
 
 
-    static async checkTopFive(email:string, miniTime: number, curTopFiveScores: Array<number>, curTopFivePlayers: Array<String>){
-        try{
-            const maxScore = Math.max(...curTopFiveScores);
-            if(miniTime > maxScore){
-                //miniTime does not belong in top 5
-                return;
-            }else if (miniTime == maxScore){
-                //miniTime belongs in the top 5
-
+    static async checkAndUpdateTopFive(email: string, miniTime: number, topFive: any, accessCode: String) {
+        let inserted = false;
+        let positionToUpdate = -1;
+    
+        // Check if miniTime should be inserted or if it ties with an existing time
+        for (let position = 1; position <= 5; position++) {
+            const entry = topFive[position.toString()];
+            if (entry) {
+                // Check for tie, if the submitting player is not already in the list for this time
+                if (entry.miniTime === miniTime && !entry.players.includes(email)) {
+                    entry.players.push(email);
+                    inserted = true;
+                    break;
+                } else if (entry.miniTime > miniTime) {
+                    // If the time is better and should be inserted higher in the leaderboard
+                    positionToUpdate = position;
+                    break;
+                }
+            } else {
+                // If we have less than 5 times, we can insert it at this position
+                positionToUpdate = position;
+                break;
             }
-        }catch(error){
-            await throwError(error);
+        }
+    
+        // If we have a new top 5 time but didn't insert it yet
+        if (positionToUpdate !== -1 && !inserted) {
+            for (let i = 5; i > positionToUpdate; i--) {
+                if (topFive[(i - 1).toString()]) {
+                    topFive[i.toString()] = { ...topFive[(i - 1).toString()] };
+                }
+            }
+            topFive[positionToUpdate.toString()] = { players: [email], miniTime: miniTime };
+            inserted = true;
+        }
+    
+        if (inserted) {
+            // Update the database with the new topFive
+            await connectMongoDB();
+            await League.findOneAndUpdate({ accessCode: accessCode }, { $set: { "topFive": topFive } }, { new: true });
+            return `Successfully updated the leaderboard with the time: ${miniTime}`;
+        } else {
+            // Handle the case where the time doesn't make it to the leaderboard
+            // This could be a message to the user or logging
+            return `The time ${miniTime} did not make it to the top 5 leaderboard.`;
         }
     }
-    static async updateLeagueTopFive(email:string, miniTime: number, accessCode: String){
+    
+
+
+    static async updateLeagueTopFive(email:string, miniTime: number, accessCode: String, hasSubmittedToday: boolean){
+        if(hasSubmittedToday){
+            throw new Error("User has already submitted today's scores");
+        }
+        
         try{
             const league = await this.getLeagueByAccessCode(accessCode);
             if(league.topFive){
-                //check if miniTime is in top 5
+                //update top 5 leaderboard
+                await this.checkAndUpdateTopFive(email, miniTime, league.topFive, accessCode);
+                return `Successfully updated ${league.name} top 5`;
             }else{
                 //create top 5 and add player at number 1
                 league.topFive = {};
                 league.topFive["1"] ={
-                    email: email,
+                    players: [email],
                     miniTime: miniTime
                 }; 
                 await connectMongoDB();
@@ -113,6 +165,26 @@ class LeagueService{
             await throwError(error);
         }
     }
+
+    static async updateLeagueLeaderboard(email: string, accessCode: String) {
+        try {
+            let inserted = false;
+            let positionToUpdate = -1;
+            const user = await UserService.getUser(email);
+            const league = await this.getLeagueByAccessCode(accessCode);
+            
+            for(let position = 1; position <= league.players.length; position++){
+                const entry = league.leaderboard[position.toString()];
+                if(entry){
+                    
+                }
+            }
+
+        } catch (error) {
+            await throwError(error);
+        }
+    }
+    
     
 }
 

@@ -24,6 +24,7 @@ export async function PUT(request: NextRequest){
     
         //Update league leaderboards
         await LeagueService.updateLeagueTopFive(email, miniTime, accessCode, hasSubmittedToday);
+        await LeagueService.updateLeagueLeaderboard(email, accessCode);
 
         return NextResponse.json({ message: "Scores sent successfully" }, { status: 200 });
     }catch(err){

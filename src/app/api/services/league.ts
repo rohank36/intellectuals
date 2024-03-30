@@ -168,23 +168,90 @@ class LeagueService{
 
     static async updateLeagueLeaderboard(email: string, accessCode: String) {
         try {
-            let inserted = false;
-            let positionToUpdate = -1;
             const user = await UserService.getUser(email);
             const league = await this.getLeagueByAccessCode(accessCode);
-            
-            for(let position = 1; position <= league.players.length; position++){
-                const entry = league.leaderboard[position.toString()];
-                if(entry){
-                    
+            if(league.leaderboard){
+                //update top 5 leaderboard
+                await this.checkAndUpdateLeagueLeaderboard(email, user.curSeasonPoints, league.leaderboard, accessCode, league.players.length);
+                return `Successfully updated ${league.name} leaderboard`;
+            }else{
+                league.leaderboard = {};
+                league.leaderboard["1"] = {
+                    players: [email],
+                    totalPoints: user.curSeasonPoints
                 }
+                await connectMongoDB();
+                await League.findOneAndUpdate({ accessCode: accessCode }, { $set: { "leaderboard": league.leaderboard } }, { new: true });
+                return `Successfully updated ${league.name} leaderboard`;
             }
-
         } catch (error) {
             await throwError(error);
         }
     }
+
+    static async checkAndUpdateLeagueLeaderboard(email: string, totalPoints: number, leaderboard: any, accessCode: String, totalLeaguePlayers: number) {
+        let inserted = false;
     
+        // Step 1: Remove the existing player entry if present.
+        for (const position in leaderboard) {
+            const entry = leaderboard[position];
+            if (entry.players.includes(email)) {
+                // If the player exists in this position, remove them.
+                entry.players = entry.players.filter((playerEmail: string) => playerEmail !== email);
+                // If there are no more players left at this position, delete the entry.
+                if (entry.players.length === 0) {
+                    delete leaderboard[position];
+                }
+                break; // A player can only exist once in the leaderboard, so we can stop searching.
+            }
+        }
+    
+        // Create a new entry for the user.
+        const newUserEntry = { players: [email], totalPoints };
+    
+        // Step 2: Find the appropriate position for the new entry.
+        let insertPosition = 1;
+        let foundSpot = false;
+        for (; insertPosition <= totalLeaguePlayers; insertPosition++) {
+            const entry = leaderboard[insertPosition.toString()];
+            if (!entry) {
+                foundSpot = true; // Found a spot because it's empty.
+                break;
+            } else if (entry.totalPoints < totalPoints) {
+                foundSpot = true; // Found a better spot.
+                break;
+            } else if (entry.totalPoints === totalPoints) {
+                // Keep looking for the next position after the last tie if we're not at the end of the leaderboard.
+                if (insertPosition === totalLeaguePlayers) {
+                    // If we're at the last position allowed and it's a tie, we insert here and will remove the last one.
+                    foundSpot = true;
+                    break;
+                }
+            }
+        }
+    
+        if (foundSpot) {
+            // Step 3: Shift entries down if necessary and insert the new entry.
+            for (let position = totalLeaguePlayers; position >= insertPosition; position--) {
+                if (position === totalLeaguePlayers) {
+                    // If the leaderboard is full, we remove the last entry.
+                    delete leaderboard[(position + 1).toString()];
+                } else {
+                    // Shift the entry down.
+                    leaderboard[(position + 1).toString()] = { ...leaderboard[position.toString()] };
+                }
+            }
+            leaderboard[insertPosition.toString()] = newUserEntry;
+            inserted = true;
+        }
+    
+        if (inserted) {
+            // Update the database with the new leaderboard
+            await connectMongoDB(); // Make sure this aligns with your actual MongoDB connection logic
+            await League.findOneAndUpdate({ accessCode }, { $set: { "leaderboard": leaderboard } }, { new: true });
+            return `Successfully updated the leaderboard with ${email}`;
+        } 
+    }
     
 }
 

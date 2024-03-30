@@ -6,7 +6,7 @@ const leagueSchema = new Schema(
         accessCode: {type: String, required: true, unique: true},
         players: {type: [String], default: []}, //use player emails in array
         isInSeason: {type: Boolean, default: false},
-        leaderboard: {type:{}, default: {}},
+        leaderboard: {type:{}},
         championshipBoard:  {type: [String], default: []},
         topFive: {type: {}},
 

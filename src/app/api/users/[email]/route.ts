@@ -11,7 +11,7 @@ export async function POST(request: NextRequest, {params}: {params: {email: stri
     try{
         const user = await UserService.getUser(email);
         if(user){
-            return NextResponse.json({ message: "User already exists", user: user }, { status: 409 });
+            return NextResponse.json({ message: "User already exists", user: user }, { status: 201 });
         }
         const newUser = await UserService.createNewUser(email, firstName, lastName, displayName, accessCode);
         return NextResponse.json({ message: "User created successfully", user: newUser }, { status: 201 });
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest, {params}: {params: {email: strin
     try{
         const user = await UserService.getUser(email);
         if(!user){
-            return NextResponse.json({ message: "User not found" }, { status: 404 });
+            return NextResponse.json({ message: "User not found", user: user }, { status: 200 });
         }
         return NextResponse.json({ message: "User fetched successfully", user: user }, { status: 200 });
     }catch(err){

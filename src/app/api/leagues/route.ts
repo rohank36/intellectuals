@@ -12,4 +12,3 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Failed to create league", error: err}, { status: 500 });
     }
 }
-

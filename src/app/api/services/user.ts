@@ -120,22 +120,47 @@ class UserService{
     static async calculateBasePoints(connectionMistakes: Number, miniTime: Number, email: String){
         try{
             let connectionPoints = 0;
-            switch (connectionMistakes) {
-                case 0:
-                    connectionPoints = 10;
-                    break;
-                case 4:
-                    connectionPoints = 0;
-                    break;
-                default:
-                    connectionPoints = 5;
-                    break;
-            }
             let miniPoints = 0;
-            if(miniTime){
-                miniPoints = 3;
+            if(connectionMistakes !== null){
+                
+                switch (connectionMistakes) {
+                    case 0:
+                        connectionPoints = 10;
+                        break;
+                    case 4:
+                        connectionPoints = 0;
+                        break;
+                    default:
+                        connectionPoints = 5;
+                        break;
+                }
+            }
+            if(miniTime !== null){
+                if(miniTime){
+                    miniPoints = 3;
+                }
             }
             return connectionPoints + miniPoints;
+        }catch(error){
+            await throwError(error);
+        }
+    }
+    static async updateMiniPodiumStat(email: string){
+        try{
+            await connectMongoDB();
+            const user = await User.findOne({email});
+            await User.findOneAndUpdate({email},{$set:{"stats.totalMiniPodiums": user.stats.totalMiniPodiumFinishes + 1}});
+            return "Successfully updated User Mini Podiums stat";
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async resetUserHasSubmittedToday(){
+        try{
+            await connectMongoDB();
+            const result = await User.updateMany({}, { $set: { hasSubmittedToday: false } });
+            return "Successfully reset Users hasSubmittedToday";
         }catch(error){
             await throwError(error);
         }

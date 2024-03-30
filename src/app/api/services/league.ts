@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import connectMongoDB from "@/libs/mongodb";
 import League from "../../../models/league";
+import User from "../../../models/user";
 import throwError from "./error";
 import UserService from "./user";
 import { platform } from "os";
@@ -21,6 +22,26 @@ class LeagueService{
             await connectMongoDB();
             const league = await League.findOne({accessCode: accessCode});
             return league;
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async getAllLeagues(){
+        try{
+            await connectMongoDB();
+            const leagues = await League.find();
+            return leagues;
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async getAllActiveLeagues(){
+        try{
+            await connectMongoDB();
+            const leagues = await League.find({isInSeason: true});
+            return leagues;
         }catch(error){
             await throwError(error);
         }
@@ -97,6 +118,9 @@ class LeagueService{
         for (let position = 1; position <= 5; position++) {
             const entry = topFive[position.toString()];
             if (entry) {
+                if (!entry.players) {
+                    entry.players = []; // Initialize players as an empty array if undefined
+                }
                 // Check for tie, if the submitting player is not already in the list for this time
                 if (entry.miniTime === miniTime && !entry.players.includes(email)) {
                     entry.players.push(email);
@@ -139,11 +163,8 @@ class LeagueService{
     
 
 
-    static async updateLeagueTopFive(email:string, miniTime: number, accessCode: String, hasSubmittedToday: boolean){
-        if(hasSubmittedToday){
-            throw new Error("User has already submitted today's scores");
-        }
-        
+    static async updateLeagueTopFive(email:string, miniTime: number, accessCode: String){
+
         try{
             const league = await this.getLeagueByAccessCode(accessCode);
             if(league.topFive){
@@ -252,6 +273,54 @@ class LeagueService{
             return `Successfully updated the leaderboard with ${email}`;
         } 
     }
+
+    static async resetAllUserSeasonPoints(accessCode: string){
+        try{
+            await connectMongoDB();
+            const league = await LeagueService.getLeagueByAccessCode(accessCode);
+            for(const email of league.players){
+                await User.findOneAndUpdate({email},{$set:{"curSeasonPoints": 0}});
+            }
+            return "Successfully reset all users points";
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async resetLeagueLeaderboard(accessCode: string){
+        try{    
+            await connectMongoDB();
+            //await League.findOneAndUpdate({accessCode:accessCode},{$set:{"leaderboard": {}}});
+            const result = await League.findOneAndUpdate(
+                { accessCode: accessCode },
+                { $unset: { "leaderboard": "" } }, // Proper use of $unset to remove the field
+                { new: true } // Optional: Return the modified document rather than the original
+            );
+            return "Successfully reset the leaderboard";
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async resetLeagueTopFive(accessCode: string){
+        try{    
+            await connectMongoDB();
+            //await League.findOneAndUpdate({accessCode:accessCode},{$set:{"topFive": {}}});
+            const result = await League.findOneAndUpdate(
+                { accessCode: accessCode },
+                { $unset: { "topFive": "" } }, // Proper use of $unset to remove the field
+                { new: true } // Optional: Return the modified document rather than the original
+            );
+            return "Successfully reset the top 5 leaderboard";
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    
+
+    static async calculatePodiumPoints(){}
+    
     
 }
 

@@ -145,6 +145,33 @@ class UserService{
             await throwError(error);
         }
     }
+
+    static calculateMiniPodiumPoints(position: string){
+        switch (position) {
+            case "1":
+                return 5;
+            case "2":
+                return 4;
+            case "3":
+                return 3;
+            case "4":
+                return 2;
+            case "5":
+                return 1;
+        }
+    }
+
+    static async updateUserPointsAfterMiniPodium(pointsToBeAdded: number, email: string){
+        try{
+            const user = await this.getUser(email);
+            await connectMongoDB();
+            await User.findOneAndUpdate({email},{$set:{"curSeasonPoints": user.curSeasonPoints + pointsToBeAdded, "stats.totalMiniPodiumFinishes": user.stats.totalMiniPodiumFinishes + 1}});
+            return ;
+        }catch(error){  
+            await throwError(error);
+        }    
+    }
+
     static async updateMiniPodiumStat(email: string){
         try{
             await connectMongoDB();
@@ -161,6 +188,16 @@ class UserService{
             await connectMongoDB();
             const result = await User.updateMany({}, { $set: { hasSubmittedToday: false } });
             return "Successfully reset Users hasSubmittedToday";
+        }catch(error){
+            await throwError(error);
+        }
+    }
+
+    static async resetUserMiniPointsToday(){
+        try{
+            await connectMongoDB();
+            await User.updateMany({}, { $set: { miniTimeToday: 0 } });
+            return "Successfully reset Users miniTimeToday";
         }catch(error){
             await throwError(error);
         }

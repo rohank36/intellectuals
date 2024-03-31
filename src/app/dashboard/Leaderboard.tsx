@@ -31,7 +31,7 @@ const Leaderboard = ({ leaderboardType, board }: LeaderboardProps) => {
             players.forEach((player: string) => {
                 const displayValue = leaderboardType === "topFive" ? miniTime?.toFixed(2): totalPoints.toString();
                 rows.push(
-                    <tr key={`${position}-${player}`}>
+                    <tr className="hover" key={`${position}-${player}`}>
                         <th className="px-2">{position}</th>
                         <td className="px-2 truncate max-w-xs">{player}</td>
                         <td className="px-2">{displayValue}</td>

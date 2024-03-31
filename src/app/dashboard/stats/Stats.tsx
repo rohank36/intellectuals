@@ -6,7 +6,6 @@ import LeagueInterface from "@/entities/leagueEntity";
 import LoadingComponent from "@/app/LoadingComponent";
 
 const Stats = (props: {email:string}) =>{
-    //TODO: call get user here from service and use useState to populate the info. easy one.
     const [user, setUser] = useState<UserInterface | null>(null);
     const [league, setLeague] = useState<LeagueInterface | null>(null);
     const [leagueAvgMini, setLeagueAvgMini] = useState(0);

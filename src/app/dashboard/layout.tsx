@@ -12,7 +12,7 @@ export default function DashboardLayout({
     return(
         <div>
             <NavBar/>
-            <section className="p-36">{children}</section>
+            <section className="mt-10">{children}</section>
         </div>
     )
   }

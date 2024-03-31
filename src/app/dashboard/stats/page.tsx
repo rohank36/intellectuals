@@ -10,7 +10,9 @@ export default function StatsPage() {
   }
   if(user && user.name){
     return(
-      <Stats email={user.name}/>
+      <div className="mt-36">
+        <Stats email={user.name}/>
+      </div>
     );
   }
 }

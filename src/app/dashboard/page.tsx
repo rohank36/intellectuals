@@ -1,22 +1,17 @@
+'use client'
 import Leaderboard from "./Leaderboard";
+import { useUser } from '@auth0/nextjs-auth0/client';
+import LoadingComponent from "@/app/LoadingComponent";
+import GeneraLeaderBoard from "./GeneralLeaderBoard";
 
 export default function DashboardPage() {
+  const { user, error, isLoading } = useUser();
+  if(isLoading){
+    return <LoadingComponent/>;
+  }
+  if(user && user.name){
     return(
-      <h1>Hello, Leaderboard Page!</h1>
+      <GeneraLeaderBoard email={user.name}/>
     );
   }
-
-  //Season Ranking 
-  //Championship rankings 
-  //top 5 mini times
-  //previous seasons top 3 
-
-
-  /*
-<div>
-        <h1>Hello, Leaderboard Page!</h1>
-        <Leaderboard title="Season Ranking"/>
-        <Leaderboard title="Todays Top 5 Mini Times"/>
-        <Leaderboard title="Previous Seasons Top 3"/>
-      </div>
-  */
+}

@@ -8,7 +8,7 @@ const userSchema = new Schema(
         fullName: {type: String},
         displayName: { type: String, required: true},
         league: { type: String },
-        accessCode: { type: String },
+        accessCode: { type: String, required: true},
         hasSubmittedToday: {type: Boolean, default: false},
         miniTimeToday: {type: Number, default: 0},
         curSeasonPoints: {type: Number, default: 0},

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserService from "@/frontend_services/user";
 import UserInterface from "@/entities/userEntity";
 import Link from 'next/link';
+import LoadingComponent from "@/app/LoadingComponent";
 
 const UserInformation = (props: {email: string}) => {
     const [user, setUser] = useState<UserInterface | null>(null);
@@ -10,12 +11,14 @@ const UserInformation = (props: {email: string}) => {
     const [displayName, setDisplayName] = useState('');
     const [accessCode, setAccessCode] = useState('');
     const [refreshUser, setRefreshUser] = useState(false); 
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             const res = await UserService.getUser(props.email);
             if(res.user){
                 setUser(res.user);
+                setIsLoading(false);
             }
         };
         fetchUser().catch(console.error);
@@ -24,11 +27,14 @@ const UserInformation = (props: {email: string}) => {
     const handleFormSubmit = async () =>{
         const res =  await UserService.createNewUser(props.email, displayName, accessCode, firstName, lastName);
         if(res.user){
+            setIsLoading(true);
             setRefreshUser(prev => !prev);
         }
     }
-    
-    if (!user) {
+    if(isLoading){
+        return <LoadingComponent/>;
+    }
+    else if (!isLoading && !user) {
         return (
             <div className="flex flex-col justify-center items-center h-screen">
                 <h1 className="text-xl font-bold mb-6">Please enter your information: </h1>
@@ -58,7 +64,7 @@ const UserInformation = (props: {email: string}) => {
             <div className="hero min-h-screen bg-base-200">
                 <div className="hero-content text-center">
                     <div className="max-w-max">
-                        <h1 className="text-5xl font-bold py-8">Welcome {user.firstName}</h1>
+                        <h1 className="text-5xl font-bold py-8">Welcome {user!.firstName}</h1>
                         <Link href="/dashboard" passHref>
                             <button className="btn btn-primary" type="button">Enter</button>
                         </Link>

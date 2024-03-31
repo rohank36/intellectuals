@@ -38,7 +38,7 @@ class UserService{
                 throw new Error("League not found");
             }else{
                 let fullName = firstName + " " + lastName;
-                const newUser = await User.create({email, firstName, lastName, fullName, displayName, league: associatedLeague._id});
+                const newUser = await User.create({email, firstName, lastName, fullName, displayName, accessCode, league: associatedLeague._id});
                 await LeagueService.addPlayerToLeague(email, accessCode);
                 return newUser;
             }

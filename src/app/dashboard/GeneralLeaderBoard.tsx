@@ -13,6 +13,7 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
     const [topFive, setTopFive] = useState({});
     const [standings, setStandings] = useState({});
     const [championship, setChampionship] = useState({});
+    const [displayNames,  setDisplayNames] = useState({});
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -31,6 +32,9 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
                     if(leagueRes.league.championshipBoard){
                       setChampionship(leagueRes.league.championshipBoard);
                     }
+                    if(leagueRes.league.playersDisplayName){
+                      setDisplayNames(leagueRes.league.playersDisplayName);
+                    }
                     setIsLoading(false);
                 }
             }
@@ -47,9 +51,9 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
           <div className="flex flex-col justify-center items-center ml-14 mr-14">
             <h1 className='text-2xl font-bold text-center'>{league?.name} Leaderboards</h1>
             <div className="flex flex-row justify-center space-x-36 mt-12">
-              <Leaderboard leaderboardType="topFive" board={topFive}/>
-              <Leaderboard leaderboardType="general" board={standings}/>
-              <Leaderboard leaderboardType="championship" board={championship}/>
+              <Leaderboard leaderboardType="topFive" board={topFive} displayNames={displayNames}/>
+              <Leaderboard leaderboardType="general" board={standings} displayNames={displayNames}/>
+              <Leaderboard leaderboardType="championship" board={championship} displayNames={displayNames}/>
             </div>
           </div>
       );

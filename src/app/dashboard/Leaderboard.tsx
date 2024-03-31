@@ -11,10 +11,11 @@ interface BoardEntry {
   
 interface LeaderboardProps {
     leaderboardType: string;
-    board: { [position: string]: BoardEntry };
+    board: { [position: string]: BoardEntry }
+    displayNames: { [email: string]: string };
 }
 
-const Leaderboard = ({ leaderboardType, board }: LeaderboardProps) => {
+const Leaderboard = ({ leaderboardType, board, displayNames }: LeaderboardProps) => {
     const [boardType, setBoardType] = useState(() => {
         switch(leaderboardType){
             case "general": return "Season Standings";
@@ -29,11 +30,12 @@ const Leaderboard = ({ leaderboardType, board }: LeaderboardProps) => {
         Object.entries(board).forEach(([position, entry]) => {
             const { players, totalPoints, miniTime } = entry;
             players.forEach((player: string) => {
+                const playerName = displayNames[player] || player;
                 const displayValue = leaderboardType === "topFive" ? miniTime?.toFixed(2): totalPoints.toString();
                 rows.push(
                     <tr className="hover" key={`${position}-${player}`}>
                         <th className="px-2">{position}</th>
-                        <td className="px-2 truncate max-w-xs">{player}</td>
+                        <td className="px-2 truncate max-w-xs">{playerName}</td>
                         <td className="px-2">{displayValue}</td>
                     </tr>
                 );

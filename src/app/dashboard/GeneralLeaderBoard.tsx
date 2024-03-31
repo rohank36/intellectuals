@@ -14,6 +14,7 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
     const [standings, setStandings] = useState({});
     const [championship, setChampionship] = useState({});
     const [displayNames,  setDisplayNames] = useState({});
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -25,6 +26,8 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
                     setLeague(leagueRes.league);
                     if(leagueRes.league.topFive){
                       setTopFive(leagueRes.league.topFive);
+                    }else{
+                      setTopFive({});
                     }
                     if(leagueRes.league.leaderboard){
                       setStandings(leagueRes.league.leaderboard);
@@ -41,7 +44,12 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
 
         };
         fetchUser().catch(console.error);
-    }, [props.email])
+    }, [props.email, refresh])
+
+    const handleClickRefresh = () =>{
+      setIsLoading(true);
+      setRefresh(!refresh);
+    }
     
 
    if(isLoading){
@@ -50,6 +58,7 @@ const GeneraLeaderBoard = (props: {email: string}) =>{
       return(
           <div className="flex flex-col justify-center items-center ml-14 mr-14">
             <h1 className='text-2xl font-bold text-center'>{league?.name} Leaderboards</h1>
+            <button className="btn btn-primary mt-4" type="button" onClick={handleClickRefresh}>Refresh</button>
             <div className="flex flex-row justify-center space-x-36 mt-12">
               <Leaderboard leaderboardType="topFive" board={topFive} displayNames={displayNames}/>
               <Leaderboard leaderboardType="general" board={standings} displayNames={displayNames}/>

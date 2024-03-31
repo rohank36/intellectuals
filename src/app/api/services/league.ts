@@ -217,9 +217,10 @@ class LeagueService{
         // Step 1: Remove the existing player entry if present.
         for (const position in leaderboard) {
             const entry = leaderboard[position];
-            if (entry.players.includes(email)) {
+            const playersArray = entry.players || [];
+            if (playersArray.includes(email)) {
                 // If the player exists in this position, remove them.
-                entry.players = entry.players.filter((playerEmail: string) => playerEmail !== email);
+                entry.players = playersArray.filter((playerEmail: string) => playerEmail !== email);
                 // If there are no more players left at this position, delete the entry.
                 if (entry.players.length === 0) {
                     delete leaderboard[position];

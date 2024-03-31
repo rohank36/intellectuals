@@ -19,6 +19,8 @@ const UserInformation = (props: {email: string}) => {
             if(res.user){
                 setUser(res.user);
                 setIsLoading(false);
+            }else{
+                setIsLoading(false);
             }
         };
         fetchUser().catch(console.error);

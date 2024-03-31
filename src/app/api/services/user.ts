@@ -30,7 +30,7 @@ class UserService{
     }
     */
     
-    static async createNewUser(email:String, firstName:String, lastName:String, displayName:String, accessCode:String){
+    static async createNewUser(email:string, firstName:String, lastName:String, displayName:string, accessCode:string){
         try {
             await connectMongoDB();
             const associatedLeague = await LeagueService.getLeagueByAccessCode(accessCode);
@@ -39,7 +39,7 @@ class UserService{
             }else{
                 let fullName = firstName + " " + lastName;
                 const newUser = await User.create({email, firstName, lastName, fullName, displayName, accessCode, league: associatedLeague._id});
-                await LeagueService.addPlayerToLeague(email, accessCode);
+                await LeagueService.addPlayerToLeague(email, accessCode, displayName);
                 return newUser;
             }
           } catch (error) {

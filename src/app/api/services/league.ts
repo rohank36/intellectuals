@@ -47,15 +47,16 @@ class LeagueService{
         }
     }
 
-    static async addPlayerToLeague(email:String, accessCode:String){
+    static async addPlayerToLeague(email:string, accessCode:string, displayName:string){
         try{
             await connectMongoDB();
             const curLeague = await this.getLeagueByAccessCode(accessCode);
             if(!curLeague){
                 throw new Error('Error finding league');
             }else{
+                curLeague.playersDisplayName[email] = displayName;
                 curLeague.players.push(email);
-                await League.findOneAndUpdate({accessCode:accessCode},{players:curLeague.players});
+                await League.findOneAndUpdate({accessCode:accessCode},{players:curLeague.players, playersDisplayName: curLeague.playersDisplayName});
                 return `Successfully added ${email} to ${curLeague.name}`;
             }
         }catch(error){
